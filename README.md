@@ -2,9 +2,9 @@
 
 ## Description
 
-This application is create during [Deerhacks](https://www.deerhacks.ca/) hackathon in 2023.
+This application is created within 36 hours during [Deerhacks](https://www.deerhacks.ca/) hackathon in 2023.
 
-This is an app which allows Windows laptop users to auto-adjust the screen brightness for whom does not have a light sensor.
+This is an app which allows Windows laptop users to auto-adjust the screen brightness for whom does not have a light sensor on their laptop.
 
 ## Run
 
