@@ -7,6 +7,7 @@ from PyQt6.QtGui import QImage, QPixmap
 from PyQt6.QtWidgets import QApplication, QVBoxLayout, QPushButton, QWidget, QLabel, QSlider
 import screen_brightness_control as sbc
 
+
 class MainWindow(QWidget):
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -27,7 +28,7 @@ class MainWindow(QWidget):
         self.slider.setMaximum(100)
         self.slider.setTickPosition(QSlider.TickPosition.TicksBelow)
         self.slider.setTickInterval(10)
-        self.slider.setValue(sbc.get_brightness())
+        self.slider.setValue(sbc.get_brightness()[0])
         self.slider.valueChanged.connect(self.adjustBrightness)
 
         self.brightness = QLabel("<h1>Current Brightness: {}%</h1>".format(str(self.slider.value())))
@@ -61,7 +62,6 @@ class MainWindow(QWidget):
         self.brightness.setText("<h1>Current Brightness: {}%</h1>".format(str(self.slider.value())))
         self.brightness.adjustSize()
         sbc.set_brightness(self.slider.value())
-        
 
 
 class Camera(QThread):
@@ -82,17 +82,17 @@ class Camera(QThread):
                 image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 flippedImage = cv2.flip(image, 1)
                 convertToQtFormat = QImage(flippedImage.data, flippedImage.shape[1], flippedImage.shape[0],
-                                              QImage.Format.Format_RGB888)
+                                           QImage.Format.Format_RGB888)
                 pic = convertToQtFormat.scaled(640, 640, Qt.AspectRatioMode.KeepAspectRatio)
                 self.imageUpdate.emit(pic)
                 if self.saveImage:
                     cv2.imwrite("img{}.png".format(time_stamp), frame)
+
     def stop(self):
         self.saveImage = False
 
     def enable(self):
         self.saveImage = True
-
 
 
 if __name__ == "__main__":
