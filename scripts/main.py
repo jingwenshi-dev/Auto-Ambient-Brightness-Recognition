@@ -7,6 +7,8 @@ from PyQt6.QtGui import QImage, QPixmap
 from PyQt6.QtWidgets import QApplication, QVBoxLayout, QPushButton, QWidget, QLabel, QSlider
 import screen_brightness_control as sbc
 
+from predict import predict_image
+
 
 class MainWindow(QWidget):
     def __init__(self):
@@ -86,7 +88,9 @@ class Camera(QThread):
                 pic = convertToQtFormat.scaled(640, 480, Qt.AspectRatioMode.KeepAspectRatio)
                 self.imageUpdate.emit(pic)
                 if self.saveImage:
-                    cv2.imwrite("img{}.png".format(time_stamp), frame)
+                    cv2.imwrite("temp_img.png", frame)
+                    result = predict_image("temp_img.png".format(time_stamp))
+                    sbc.set_brightness(result)
 
     def stop(self):
         self.saveImage = False

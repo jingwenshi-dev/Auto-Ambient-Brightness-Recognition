@@ -84,15 +84,9 @@ def predict_image(image_path):
     result = pred.item()
 
     if result == 0:
-        return 0.12
+        return 12
     elif result == 1:
-        return 0.37
+        return 37
     elif result == 2:
-        return 0.62
-    return 0.87
-
-
-# result = predict_image(r"C:\Users\Razer\Desktop\Auto-Ambient-Brightness-Recognition\Test\12%\Ben 12%_195_12%.jpg")
-# print(result)
-# result = predict_image(r"C:\Users\Razer\Desktop\Auto-Ambient-Brightness-Recognition\Test\87%\Ben 87%_90_87%.jpg")
-# print(result)
+        return 62
+    return 87
