@@ -11,7 +11,7 @@ import screen_brightness_control as sbc
 from ModelPredictionInterface import predict_image, CNN
 
 model = CNN(out_channels=2)
-weight_path = '../checkpoint/' + 'Weight3.ckpt'
+weight_path = '../../Weight3.ckpt'
 model.load_state_dict(torch.load(weight_path))
 model.eval()
 
@@ -97,8 +97,8 @@ class Camera(QThread):
                 pic = convertToQtFormat.scaled(640, 480, Qt.AspectRatioMode.KeepAspectRatio)
                 self.imageUpdate.emit(pic)
                 if self.saveImage and int((curTime - self.lastSaveTime) % 60) >= 2:
-                    cv2.imwrite("temp_img.png", frame)
-                    self.result = predict_image(model, "temp_img.png")
+                    cv2.imwrite("../../temp_img.png", frame)
+                    self.result = predict_image(model, "../../temp_img.png")
                     sbc.fade_brightness(self.result)
                     self.lastSaveTime = time.time()
 
