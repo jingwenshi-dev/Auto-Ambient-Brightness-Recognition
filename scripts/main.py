@@ -1,4 +1,6 @@
-import sys, time, calendar
+import sys
+import time
+import calendar
 import cv2
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 from PyQt6.QtGui import QImage, QPixmap
@@ -26,7 +28,7 @@ class MainWindow(QWidget):
         self.slider.setTickPosition(QSlider.TickPosition.TicksBelow)
         self.slider.setTickInterval(10)
         self.slider.setValue(20)
-        self.slider.valueChanged.connect(self.display)
+        self.slider.valueChanged.connect(self.adjustBrightness)
 
         self.brightness = QLabel("<h1>Current Brightness: {}%</h1>".format(str(self.slider.value())))
         self.layout.addWidget(self.brightness)
@@ -55,9 +57,11 @@ class MainWindow(QWidget):
         else:
             self.enableFeed()
 
-    def display(self):
+    def adjustBrightness(self):
         self.brightness.setText("<h1>Current Brightness: {}%</h1>".format(str(self.slider.value())))
         self.brightness.adjustSize()
+        sbc.set_brightness(self.slider.value())
+        
 
 
 class Camera(QThread):
