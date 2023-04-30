@@ -15,6 +15,7 @@ weight_path = '../checkpoint/' + 'Weight3.ckpt'
 model.load_state_dict(torch.load(weight_path))
 model.eval()
 
+
 class MainWindow(QWidget):
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -98,7 +99,7 @@ class Camera(QThread):
                 if self.saveImage and int((curTime - self.lastSaveTime) % 60) >= 2:
                     cv2.imwrite("temp_img.png", frame)
                     self.result = predict_image(model, "temp_img.png")
-                    sbc.set_brightness(self.result)
+                    sbc.fade_brightness(self.result)
                     self.lastSaveTime = time.time()
 
     def stop(self):
