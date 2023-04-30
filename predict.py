@@ -2,7 +2,6 @@ from PIL import Image
 
 import torch
 import torch.nn as nn
-from PIL.Image import Resampling
 from torchvision.transforms import Compose, ToTensor
 
 
@@ -52,9 +51,6 @@ def preprocess_image(image_path):
     # Load the image
     image = Image.open(image_path)
 
-    # # Resize the image
-    # image = image.resize((640, 480), resample=Resampling.LANCZOS)
-
     # Apply the required transformations
     transform = Compose([
         ToTensor()
@@ -67,13 +63,9 @@ def preprocess_image(image_path):
     return image
 
 
-def predict_image(image_path):
+def predict_image(model, image_path):
     # Preprocess the image
     image = preprocess_image(image_path)
-
-    # Set the model to evaluation mode
-    model = CNN(out_channels=2)
-    model.eval()
 
     # Get the model's prediction
     output = model(image)

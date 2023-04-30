@@ -2,13 +2,18 @@ import sys
 import time
 import calendar
 import cv2
+import torch
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 from PyQt6.QtGui import QImage, QPixmap
 from PyQt6.QtWidgets import QApplication, QVBoxLayout, QPushButton, QWidget, QLabel, QSlider
 import screen_brightness_control as sbc
 
-from predict import predict_image
+from predict import predict_image, CNN
 
+model = CNN(out_channels=2)
+weight_path = '../checkpoint/' + 'Weight3.ckpt'
+model.load_state_dict(torch.load(weight_path))
+model.eval()
 
 class MainWindow(QWidget):
     def __init__(self):
@@ -89,7 +94,7 @@ class Camera(QThread):
                 self.imageUpdate.emit(pic)
                 if self.saveImage:
                     cv2.imwrite("temp_img.png", frame)
-                    result = predict_image("temp_img.png".format(time_stamp))
+                    result = predict_image(model, "temp_img.png".format(time_stamp))
                     sbc.set_brightness(result)
 
     def stop(self):
