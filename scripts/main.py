@@ -27,7 +27,7 @@ class MainWindow(QWidget):
         self.slider.setMaximum(100)
         self.slider.setTickPosition(QSlider.TickPosition.TicksBelow)
         self.slider.setTickInterval(10)
-        self.slider.setValue(20)
+        self.slider.setValue(sbc.get_brightness())
         self.slider.valueChanged.connect(self.adjustBrightness)
 
         self.brightness = QLabel("<h1>Current Brightness: {}%</h1>".format(str(self.slider.value())))
