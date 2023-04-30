@@ -50,6 +50,7 @@ class MainWindow(QWidget):
 
     def imageUpdateSlot(self, image):
         self.feedLabel.setPixmap(QPixmap.fromImage(image))
+        self.slider.setValue(self.camera.result)
 
     def cancelFeed(self):
         self.btn.setText("Enable Auto Adjust")
@@ -79,6 +80,7 @@ class Camera(QThread):
         self.ThreadActive = True
         self.saveImage = False
         self.lastSaveTime = time.time()
+        self.result = 0
 
     def run(self):
         capture = cv2.VideoCapture(0)
@@ -94,8 +96,8 @@ class Camera(QThread):
                 self.imageUpdate.emit(pic)
                 if self.saveImage and int((curTime - self.lastSaveTime) % 60) >= 1:
                     cv2.imwrite("temp_img.png", frame)
-                    result = predict_image(model, "temp_img.png")
-                    sbc.set_brightness(result)
+                    self.result = predict_image(model, "temp_img.png")
+                    sbc.set_brightness(self.result)
                     self.lastSaveTime = time.time()
 
     def stop(self):
