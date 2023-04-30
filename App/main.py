@@ -8,7 +8,7 @@ from PyQt6.QtGui import QImage, QPixmap
 from PyQt6.QtWidgets import QApplication, QVBoxLayout, QPushButton, QWidget, QLabel, QSlider
 import screen_brightness_control as sbc
 
-from predict import predict_image, CNN
+from ModelPredictionInterface import predict_image, CNN
 
 model = CNN(out_channels=2)
 weight_path = '../checkpoint/' + 'Weight3.ckpt'
@@ -50,7 +50,8 @@ class MainWindow(QWidget):
 
     def imageUpdateSlot(self, image):
         self.feedLabel.setPixmap(QPixmap.fromImage(image))
-        self.slider.setValue(self.camera.result)
+        if self.camera.saveImage and self.camera.result != 0:
+            self.slider.setValue(self.camera.result)
 
     def cancelFeed(self):
         self.btn.setText("Enable Auto Adjust")
@@ -94,7 +95,7 @@ class Camera(QThread):
                                            QImage.Format.Format_RGB888)
                 pic = convertToQtFormat.scaled(640, 480, Qt.AspectRatioMode.KeepAspectRatio)
                 self.imageUpdate.emit(pic)
-                if self.saveImage and int((curTime - self.lastSaveTime) % 60) >= 1:
+                if self.saveImage and int((curTime - self.lastSaveTime) % 60) >= 2:
                     cv2.imwrite("temp_img.png", frame)
                     self.result = predict_image(model, "temp_img.png")
                     sbc.set_brightness(self.result)
