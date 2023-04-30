@@ -2,6 +2,8 @@
 
 ## Description
 
+This application is create during [Deerhacks](https://www.deerhacks.ca/) hackathon in 2023.
+
 This is an app which allows Windows laptop users to auto-adjust the screen brightness for whom does not have a light sensor.
 
 ## Run
@@ -56,3 +58,13 @@ The [interface](https://github.com/jingwenshi-dev/Auto-Ambient-Brightness-Recogn
 ## Limitation
 
 The application's ability to auto-adjust the screen brightness is limited to four discrete levels due to the absence of a continuously and smoothly adjustable light source at the University of Toronto. Consequently, the dataset utilized by the application is restricted to categorical data. Even if such a light source existed, insufficient personnel would impede the collection of an adequate number of samples. Alternatively, a softmax activation function could enable continuous mapping by the model.
+
+## Authors
+
+Jingwen (Steven) Shi: Model Building & Training, Data Collection
+
+Desmond Wang: UI Implementation & Testing
+
+Hongsheng Zhong: Idea Provider, Data Collection
+
+Hilda Chen: Project Testing & Debug, Data Collection
