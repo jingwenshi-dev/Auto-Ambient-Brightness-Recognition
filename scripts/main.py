@@ -13,7 +13,7 @@ class MainWindow(QWidget):
         super(MainWindow, self).__init__()
 
         self.setWindowTitle("Webcam GUI")
-        self.setGeometry(100, 100, 640, 640)
+        self.setGeometry(100, 100, 640, 480)
         self.layout = QVBoxLayout()
 
         self.camera = Camera()
@@ -83,7 +83,7 @@ class Camera(QThread):
                 flippedImage = cv2.flip(image, 1)
                 convertToQtFormat = QImage(flippedImage.data, flippedImage.shape[1], flippedImage.shape[0],
                                            QImage.Format.Format_RGB888)
-                pic = convertToQtFormat.scaled(640, 640, Qt.AspectRatioMode.KeepAspectRatio)
+                pic = convertToQtFormat.scaled(640, 480, Qt.AspectRatioMode.KeepAspectRatio)
                 self.imageUpdate.emit(pic)
                 if self.saveImage:
                     cv2.imwrite("img{}.png".format(time_stamp), frame)

@@ -52,8 +52,8 @@ def preprocess_image(image_path):
     # Load the image
     image = Image.open(image_path)
 
-    # Resize the image
-    image = image.resize((640, 480), resample=Resampling.LANCZOS)
+    # # Resize the image
+    # image = image.resize((640, 480), resample=Resampling.LANCZOS)
 
     # Apply the required transformations
     transform = Compose([
