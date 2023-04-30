@@ -1,8 +1,8 @@
 import sys
 import time
-import calendar
 import cv2
 import torch
+
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 from PyQt6.QtGui import QImage, QPixmap
 from PyQt6.QtWidgets import QApplication, QVBoxLayout, QPushButton, QWidget, QLabel, QSlider
@@ -78,12 +78,12 @@ class Camera(QThread):
         super().__init__()
         self.ThreadActive = True
         self.saveImage = False
+        self.lastSaveTime = time.time()
 
     def run(self):
         capture = cv2.VideoCapture(0)
         while self.ThreadActive:
-            current_GMT = time.gmtime()
-            time_stamp = calendar.timegm(current_GMT)
+            curTime = time.time()
             ret, frame = capture.read()
             if ret:
                 image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -92,10 +92,11 @@ class Camera(QThread):
                                            QImage.Format.Format_RGB888)
                 pic = convertToQtFormat.scaled(640, 480, Qt.AspectRatioMode.KeepAspectRatio)
                 self.imageUpdate.emit(pic)
-                if self.saveImage:
+                if self.saveImage and int((curTime - self.lastSaveTime) % 60) >= 1:
                     cv2.imwrite("temp_img.png", frame)
-                    result = predict_image(model, "temp_img.png".format(time_stamp))
+                    result = predict_image(model, "temp_img.png")
                     sbc.set_brightness(result)
+                    self.lastSaveTime = time.time()
 
     def stop(self):
         self.saveImage = False
